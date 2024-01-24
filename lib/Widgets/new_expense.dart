@@ -12,12 +12,39 @@ class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   DateTime? _selectedDate;
+  Category? _selectedCategory = Category.leisure;
 
   @override
   void dispose() {
     super.dispose();
     _titleController.dispose();
     _amountController.dispose();
+  }
+
+  void _validateAndSaveExpense() {
+    final enteredAmount = double.tryParse(_amountController.text);
+    if (_titleController.text.trim().isEmpty ||
+        (enteredAmount == null || enteredAmount <= 0) ||
+        _selectedDate == null) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Invalid input'),
+          content: const Text(
+            'Please make sure to enter valid title, amount, date and category',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+              },
+              child: const Text('OK'),
+            )
+          ],
+        ),
+      );
+      return;
+    }
   }
 
   void _presentDatePricker() async {
@@ -81,10 +108,29 @@ class _NewExpenseState extends State<NewExpense> {
             ],
           ),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
           Row(
             children: [
+              DropdownButton(
+                value: _selectedCategory,
+                items: Category.values
+                    .map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(e.name.toUpperCase()),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (value) {
+                  setState(
+                    () {
+                      _selectedCategory = value as Category;
+                    },
+                  );
+                },
+              ),
+              const Spacer(),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -92,11 +138,7 @@ class _NewExpenseState extends State<NewExpense> {
                 child: const Text('Cancel'),
               ),
               ElevatedButton(
-                onPressed: () {
-                  print(_titleController.text);
-                  print(_amountController.text);
-                  print(_selectedDate);
-                },
+                onPressed: _validateAndSaveExpense,
                 child: const Text('Add Expense'),
               ),
             ],
