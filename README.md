@@ -1,6 +1,6 @@
 # expense_tracker
 
-A new Flutter project.
+A Course app project for learning flutter
 
 ## Getting Started
 
