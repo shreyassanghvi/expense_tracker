@@ -1,3 +1,4 @@
+import 'package:expense_tracker/Widgets/chart/chart.dart';
 import 'package:expense_tracker/Widgets/expenses/expenses_list.dart';
 import 'package:expense_tracker/Widgets/new_expense.dart';
 import 'package:expense_tracker/models/expense.dart';
@@ -88,7 +89,8 @@ class _ExpensesState extends State<Expenses> {
       ),
       body: Column(
         children: [
-          const Text("chart"),
+          // const Text("chart"),
+          Chart(expenses: _userExpense),
           Expanded(
             child: contentWidget,
           ),

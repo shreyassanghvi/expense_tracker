@@ -27,7 +27,8 @@ class _NewExpenseState extends State<NewExpense> {
     final enteredAmount = double.tryParse(_amountController.text);
     if (_titleController.text.trim().isEmpty ||
         (enteredAmount == null || enteredAmount <= 0) ||
-        _selectedDate == null|| _selectedCategory == null) {
+        _selectedDate == null ||
+        _selectedCategory == null) {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -47,14 +48,12 @@ class _NewExpenseState extends State<NewExpense> {
       );
       return;
     }
-   widget.onAddExpense!(
-     Expense(
-       title: _titleController.text,
-       amount: enteredAmount,
-       date: _selectedDate!,
-       category: _selectedCategory!,
-     )
-   );
+    widget.onAddExpense!(Expense(
+      title: _titleController.text,
+      amount: enteredAmount,
+      date: _selectedDate!,
+      category: _selectedCategory!,
+    ));
     Navigator.pop(context);
   }
 
@@ -129,7 +128,9 @@ class _NewExpenseState extends State<NewExpense> {
                     .map(
                       (e) => DropdownMenuItem(
                         value: e,
-                        child: Text(e.name.toUpperCase()),
+                        child: Text(
+                          e.name.toUpperCase(),
+                        ),
                       ),
                     )
                     .toList(),

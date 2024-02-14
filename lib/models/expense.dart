@@ -30,3 +30,23 @@ class Expense {
 
   String get formattedDate => formatter.format(date);
 }
+
+class ExpenseBucket {
+  final Category category;
+  final List<Expense> expenses;
+
+  const ExpenseBucket({required this.category, required this.expenses});
+
+  double get totalExpenses {
+    double total = 0;
+    for (final expense in expenses) {
+      total += expense.amount;
+    }
+    return total;
+  }
+
+  ExpenseBucket.forCategory(List<Expense> allExpenses, this.category)
+      : expenses = allExpenses
+            .where((expenses) => expenses.category == category)
+            .toList();
+}

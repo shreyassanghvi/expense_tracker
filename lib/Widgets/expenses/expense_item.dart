@@ -15,9 +15,12 @@ class ExpenseItem extends StatelessWidget {
           vertical: 20,
         ),
         child: Column(
-
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(expenseData.title),
+            Text(
+              expenseData.title,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
             const SizedBox(
               height: 4,
             ),
@@ -25,6 +28,10 @@ class ExpenseItem extends StatelessWidget {
               children: [
                 Text(
                   '\$${expenseData.amount.toStringAsFixed(2)}',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(fontWeight: FontWeight.normal, fontSize: 14),
                 ),
                 const Spacer(),
                 Row(children: [
@@ -34,6 +41,10 @@ class ExpenseItem extends StatelessWidget {
                   ),
                   Text(
                     expenseData.formattedDate,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(fontWeight: FontWeight.normal, fontSize: 14),
                   ),
                 ])
               ],
