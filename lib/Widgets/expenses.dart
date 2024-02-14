@@ -39,7 +39,23 @@ class _ExpensesState extends State<Expenses> {
       _userExpense.add(expense);
     });
   }
+
   void _removeExpense(Expense expense) {
+    final int index = _userExpense.indexOf(expense);
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Expense deleted'),
+        duration: const Duration(seconds: 3),
+        action: SnackBarAction(
+            label: 'Undo',
+            onPressed: () {
+              setState(() {
+                _userExpense.insert(index, expense);
+              });
+            }),
+      ),
+    );
     setState(() {
       _userExpense.remove(expense);
     });
@@ -47,35 +63,37 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    Widget contentWidget = const Center(
+        child: Text(
+      'No expenses found. Start adding some!',
+    ));
+    if (_userExpense.isNotEmpty) {
+      contentWidget = ExpensesList(
+        expenses: _userExpense,
+        onRemoveExpense: _removeExpense,
+      );
+    }
     return Scaffold(
-      body: Column(
-        children: [
-          const Text("chart"),
-          Expanded(
-            child: ExpensesList(expenses: _userExpense, onRemoveExpense: _removeExpense,),
-          ),
-        ],
-      ),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 25, 0, 75),
+        // backgroundColor: const Color.fromARGB(255, 25, 0, 75),
         title: const Text(
           'Expense Tracker',
-          style: TextStyle(
-            color: Colors.white,
-          ),
         ),
         actions: [
           IconButton(
             onPressed: _openAddExpenseOverlay,
             icon: const Icon(Icons.add),
-            color: Colors.white,
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          const Text("chart"),
+          Expanded(
+            child: contentWidget,
           ),
         ],
       ),
     );
   }
-}
-
-class GoogleFonts {
-  const GoogleFonts();
 }

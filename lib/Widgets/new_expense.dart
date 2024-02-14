@@ -69,7 +69,7 @@ class _NewExpenseState extends State<NewExpense> {
     setState(() {
       _selectedDate = selDate;
     });
-    print(_selectedDate);
+    // print(_selectedDate);
   }
 
   @override
